@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
     <title>Space Shooter</title>
     <style>
         * {
@@ -27,12 +27,65 @@
         #gameCanvas {
             border: 2px solid #0f0;
             background-color: #000;
+            touch-action: none;
+        }
+
+        #touchControls {
+            display: none;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+            margin-top: 10px;
+            padding: 0 10px;
+        }
+
+        .touch-btn {
+            width: 80px;
+            height: 60px;
+            background: rgba(0, 255, 0, 0.3);
+            border: 2px solid #0f0;
+            border-radius: 10px;
+            color: #0f0;
+            font-size: 24px;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .touch-btn:active {
+            background: rgba(0, 255, 0, 0.6);
+        }
+
+        #fireBtn {
+            width: 100px;
+            background: rgba(255, 100, 0, 0.3);
+            border-color: #f80;
+            color: #f80;
+        }
+
+        #fireBtn:active {
+            background: rgba(255, 100, 0, 0.6);
+        }
+
+        @media (pointer: coarse) {
+            #touchControls {
+                display: flex;
+            }
         }
     </style>
 </head>
 <body>
     <div id="gameContainer">
         <canvas id="gameCanvas" width="400" height="500"></canvas>
+        <div id="touchControls">
+            <button class="touch-btn" id="leftBtn">◀</button>
+            <button class="touch-btn" id="fireBtn">FIRE</button>
+            <button class="touch-btn" id="rightBtn">▶</button>
+        </div>
     </div>
 
     <script>
@@ -265,6 +318,73 @@
             if (e.key === 'ArrowRight') keys.right = false;
             if (e.key === 'ArrowUp') keys.up = false;
             if (e.key === ' ') keys.space = false;
+        });
+
+        // ===== タッチ操作 =====
+        const leftBtn = document.getElementById('leftBtn');
+        const rightBtn = document.getElementById('rightBtn');
+        const fireBtn = document.getElementById('fireBtn');
+
+        // 左ボタン
+        leftBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            keys.left = true;
+            if (gameState === 'start' || gameState === 'gameover') {
+                initAudio();
+                startGame();
+            }
+        });
+        leftBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            keys.left = false;
+        });
+
+        // 右ボタン
+        rightBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            keys.right = true;
+            if (gameState === 'start' || gameState === 'gameover') {
+                initAudio();
+                startGame();
+            }
+        });
+        rightBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            keys.right = false;
+        });
+
+        // 発射ボタン
+        fireBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            keys.space = true;
+            if (gameState === 'start' || gameState === 'gameover') {
+                initAudio();
+                startGame();
+            }
+        });
+        fireBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            keys.space = false;
+        });
+
+        // キャンバスタップでゲーム開始
+        canvas.addEventListener('touchstart', (e) => {
+            if (gameState === 'start' || gameState === 'gameover') {
+                const rect = canvas.getBoundingClientRect();
+                const x = e.touches[0].clientX - rect.left;
+                const y = e.touches[0].clientY - rect.top;
+
+                // シェアボタンの当たり判定
+                if (gameState === 'gameover' &&
+                    x >= shareButton.x && x <= shareButton.x + shareButton.width &&
+                    y >= shareButton.y && y <= shareButton.y + shareButton.height) {
+                    shareOnX();
+                    return;
+                }
+
+                initAudio();
+                startGame();
+            }
         });
 
         // クリックイベント（シェアボタン用）
@@ -745,13 +865,13 @@
             ctx.fillText('10 enemies passed = LEVEL UP!', canvas.width / 2, canvas.height / 2 + 25);
 
             ctx.fillStyle = '#0f0';
-            ctx.font = '14px Courier New';
-            ctx.fillText('← → : MOVE', canvas.width / 2, canvas.height / 2 + 50);
-            ctx.fillText('↑ or SPACE : SHOOT', canvas.width / 2, canvas.height / 2 + 70);
+            ctx.font = '12px Courier New';
+            ctx.fillText('PC: ← → MOVE / SPACE SHOOT', canvas.width / 2, canvas.height / 2 + 50);
+            ctx.fillText('MOBILE: USE BUTTONS BELOW', canvas.width / 2, canvas.height / 2 + 70);
 
             if (Math.floor(Date.now() / 500) % 2 === 0) {
-                ctx.font = '18px Courier New';
-                ctx.fillText('PRESS SPACE TO START', canvas.width / 2, canvas.height / 2 + 110);
+                ctx.font = '16px Courier New';
+                ctx.fillText('TAP or PRESS SPACE', canvas.width / 2, canvas.height / 2 + 110);
             }
         }
 
