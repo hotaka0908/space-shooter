@@ -1,57 +1,57 @@
 # Space Shooter
 
-A retro-style space shooter game built with HTML5 Canvas and vanilla JavaScript.
+HTML5 CanvasとJavaScriptで作ったレトロ風シューティングゲーム
 
-## Play Now
+## プレイする
 
 https://space-shooter-b5m9c43ox-hotakas-projects.vercel.app
 
-## Features
+## 機能
 
-- Space shuttle with engine flame animation
-- 3 enemy types with unique behaviors:
-  - **UFO** (100pts) - Wobbles side to side
-  - **Asteroid** (200pts) - Rotates while falling
-  - **Alien** (300pts) - Chases the player
-- Level system - difficulty increases every 10 enemies passed
-- Retro sound effects using Web Audio API
-- High score saved to localStorage
-- Share your score on X (Twitter)
-- Mobile touch controls
+- エンジン炎アニメーション付きスペースシャトル
+- 3種類の敵キャラクター
+  - **UFO** (100点) - 左右にふらふら動く
+  - **隕石** (200点) - 回転しながら落下
+  - **エイリアン** (300点) - プレイヤーを追尾
+- レベルシステム - 敵が10体通過するごとに難易度上昇
+- Web Audio APIによるレトロ風効果音
+- ハイスコア保存（localStorage）
+- Xでスコアをシェア
+- スマホ対応タッチ操作
 
-## Controls
+## 操作方法
 
 ### PC
-| Key | Action |
+| キー | アクション |
 |-----|--------|
-| ← → | Move left/right |
-| ↑ / Space | Shoot |
+| ← → | 左右移動 |
+| ↑ / スペース | 発射 |
 
-### Mobile
-- **◀ ▶** buttons to move
-- **FIRE** button to shoot
-- Tap screen to start
+### スマホ
+- **◀ ▶** ボタンで移動
+- **FIRE** ボタンで発射
+- 画面タップでゲーム開始
 
-## Tech Stack
+## 技術スタック
 
 - HTML5 Canvas
-- Vanilla JavaScript
-- Web Audio API (no external sound files)
+- JavaScript
+- Web Audio API（外部音声ファイル不要）
 - CSS3
 
-## Local Development
+## ローカル開発
 
 ```bash
-# Clone the repository
+# リポジトリをクローン
 git clone https://github.com/hotaka0908/space-shooter.git
 
-# Open in browser
+# ブラウザで開く
 open index.html
 
-# Or start a local server
+# またはローカルサーバーを起動
 python3 -m http.server 8080
 ```
 
-## License
+## ライセンス
 
 MIT
